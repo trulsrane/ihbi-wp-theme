@@ -1,0 +1,29 @@
+# === Environment & Config ===
+wp-config.php
+wp-config-local.php
+.env
+.env.*
+!.env.example
+
+# === Node / Build Tools ===
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist/
+build/
+.cache/
+
+# === OS & Editor ===
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# === Misc ===
+*.log
+*.bak
+*.orig
+*.tmp
