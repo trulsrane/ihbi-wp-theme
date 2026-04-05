@@ -1,4 +1,13 @@
 <?php
+function ihbi_theme_styles() {
+    wp_enqueue_style(
+        'ihbi-theme-style',
+        get_stylesheet_uri(),
+        [],
+        wp_get_theme()->get( 'Version' )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'ihbi_theme_styles' );
 // Create a shortcode to output Project Meta Data
 add_shortcode('project_details_bar', 'render_project_details_shortcode');
 
@@ -21,42 +30,36 @@ function render_project_details_shortcode() {
     ob_start();
     ?>
     <div class="project-metadata-bar">
-        <?php if ( !empty($directions) && !is_wp_error($directions) ) : ?>
-			<div class="meta-item">
-				<span class="meta-label">Direction</span>
-				<div class="meta-directions">
-					<?php foreach ( $directions as $direction ) : ?>
-						<div class="meta-tag">
-							<?php echo esc_html( $direction->name ); ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		<?php endif; ?>
         <div class="meta-item">
-            <span class="meta-label">Year</span>
-            <?php echo esc_html($year); ?>
+            <div class="meta-label">Year</div>
+            <div class="meta-value"><?php echo esc_html($year); ?></div>
         </div>
-        
         <div class="meta-item">
-            <span class="meta-label">Owner</span>
-            <?php echo esc_html($owner); ?>
+            <div class="meta-label">Owner</div>
+            <div class="meta-value"><?php echo esc_html($owner); ?></div>
         </div>
-
         <?php if ( $sponsor ) : ?>
             <div class="meta-item">
-                <span class="meta-label">Sponsor</span>
-                <?php echo esc_html($sponsor); ?>
+                <div class="meta-label">Sponsor</div>
+                <div class="meta-value"><?php echo esc_html($sponsor); ?></div>
             </div>
         <?php endif; ?>
-
         <?php if ( $link ) : ?>
             <div class="meta-item">
-                <span class="meta-label">Publication</span>
-                <a href="<?php echo esc_url($link); ?>" target="_blank">View Link &rarr;</a>
+                <div class="meta-label">Publication</div>
+                <div class="meta-value">
+                    <a href="<?php echo esc_url($link); ?>" target="_blank">View Link &rarr;</a>
+                </div>
             </div>
         <?php endif; ?>
-
+        <?php if ( !empty($directions) && !is_wp_error($directions) ) : ?>
+			<div class="meta-item">
+				<div class="meta-label">Direction</div>
+                <div class="meta-directions">
+                    <?php foreach ( $directions as $direction ) : ?><a class="meta-tag" href="<?php echo esc_url( get_term_link( $direction ) ); ?>"><?php echo esc_html( $direction->name ); ?></a><?php endforeach; ?>
+                </div>
+			</div>
+		<?php endif; ?>
     </div>
     <?php
     // Return the HTML buffer
