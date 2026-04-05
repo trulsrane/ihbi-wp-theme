@@ -22,7 +22,7 @@ function render_project_details_shortcode() {
     $owner = get_field('project_owner');
     $sponsor = get_field('project_sponsor');
     $link = get_field('publication_link');
-    
+
     // Fetch the Direction tags
     $directions = get_the_terms( get_the_ID(), 'direction' );
 
