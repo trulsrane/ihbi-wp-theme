@@ -309,3 +309,11 @@ function render_sponsor_details() {
     <?php
     return ob_get_clean();
 }
+
+function ihbi_register_block_styles() {
+    register_block_style( 'core/group', [
+        'name'  => 'card',
+        'label' => 'Card',
+    ]);
+}
+add_action( 'init', 'ihbi_register_block_styles' );
