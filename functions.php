@@ -92,7 +92,7 @@ function ihbi_register_project_cpt() {
         'public'        => true,
         'show_in_rest'  => true,
         'menu_icon'     => 'dashicons-portfolio',
-        'supports'      => [ 'title', 'editor', 'thumbnail' ],
+        'supports'      => [ 'title', 'editor', 'thumbnail', 'comments' ],
         'rewrite'       => [ 'slug' => 'projects' ],
         'has_archive'   => true,
     ] );
