@@ -9,6 +9,16 @@ function ihbi_theme_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'ihbi_theme_styles' );
 
+// Helper function to get sponsor data
+function get_sponsor_data($sponsor) {
+    if (is_array($sponsor) && isset($sponsor[0])) {
+        $id = $sponsor[0];
+        $post = get_post($id);
+        return $post ? ['title' => $post->post_title, 'id' => $post->ID] : ['title' => '', 'id' => ''];
+    }
+    return ['title' => '', 'id' => ''];
+}
+
 // Create a shortcode to output Project Meta Data
 add_shortcode('project_details_bar', 'render_project_details_shortcode');
 
@@ -21,7 +31,7 @@ function render_project_details_shortcode() {
     // Fetch the ACF fields
     $year = get_field('project_year');
     $owner = get_field('project_owner');
-    $sponsor_field = get_field('project_sponsor');
+    $sponsor = get_field('project_sponsor');
     $link = get_field('publication_link');
 
     // Fetch the Direction tags
@@ -39,13 +49,17 @@ function render_project_details_shortcode() {
             <div class="meta-label">Owner</div>
             <div class="meta-value"><?php echo esc_html($owner); ?></div>
         </div>
-        <?php if ( $sponsor_field ) : ?>
+        <?php if ( $sponsor ) : 
+            $data = get_sponsor_data($sponsor);
+            ?>
             <div class="meta-item">
                 <div class="meta-label">Sponsor</div>
                 <div class="meta-value">
-                    <a href="<?php echo esc_url( get_permalink( $sponsor_field->ID ) ); ?>">
-                        <?php echo esc_html( $sponsor_field->post_title ); ?>
-                    </a>
+                    <?php if ($data['id']) : ?>
+                        <a href="<?php echo esc_url( get_permalink( $data['id'] ) ); ?>"><?php echo esc_html( $data['title'] ); ?></a>
+                    <?php else : ?>
+                        <?php echo esc_html( $data['title'] ); ?>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endif; ?>

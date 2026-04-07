@@ -30,6 +30,11 @@ Version: 1.0.0
     padding: 0px;
 }
 
+.meta-value {
+    margin: 0px;
+    padding: 0px;
+}
+
 .meta-directions {
     display: flex;
     flex-wrap: wrap;
