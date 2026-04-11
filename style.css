@@ -43,20 +43,19 @@ Version: 1.0.0
     padding: 0;
 }
 
-.meta-tag {
+.meta-tag, .publication-direction-tag {
+    display: inline-block;
+    align-self: flex-start;
     border-radius: 20px;
     border-color: var(--wp--preset--color--accent-6);
     border-width: 0.8px;
     border-style: solid;
     font-weight: 400;
-    padding-top: 4px;
-    padding-right: 8px;
-    padding-bottom: 4px;
-    padding-left: 8px;
+    padding: 4px 8px;
     margin-top: 10px;
     text-decoration: none;
-    display: inline-block;
     font-size: small;
+    color: var(--wp--preset--color--accent-6);
 }
 
 .meta-tag:hover {
@@ -124,4 +123,95 @@ Version: 1.0.0
     border-radius: 8px;
     padding: 24px !important;
     box-shadow: var(--wp--preset--shadow--shadow-1);
+}
+
+.publication-year-heading {
+    font-family: var(--wp--preset--font-family--roboto);
+    font-size: var(--wp--preset--font-size--x-large);
+    font-weight: 300;
+    color: var(--wp--preset--color--accent-4);
+    margin-bottom: var(--wp--preset--spacing--30);
+}
+
+.publication-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--20);
+    padding: var(--wp--preset--spacing--30) 0;
+}
+
+.publication-type-tag {
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--small);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--wp--preset--color--accent-3);
+}
+
+.publication-title {
+    font-family: var(--wp--preset--font-family--roboto);
+    font-size: var(--wp--preset--font-size--medium);
+    font-weight: 500;
+    margin: 0;
+    color: var(--wp--preset--color--contrast);
+}
+
+.publication-title a {
+    color: var(--wp--preset--color--contrast);
+    text-decoration: none;
+}
+
+.publication-title a:hover {
+    text-decoration: underline;
+}
+
+.publication-authors {
+    font-size: var(--wp--preset--font-size--small);
+    color: var(--wp--preset--color--accent-4);
+    margin: 0;
+}
+
+.publication-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--wp--preset--spacing--40);
+    flex-wrap: wrap;
+    font-size: var(--wp--preset--font-size--small);
+}
+
+.publication-doi {
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--small);
+    color: var(--wp--preset--color--accent-3);
+    text-decoration: none;
+}
+
+.publication-doi:hover {
+    text-decoration: underline;
+}
+
+.publication-projects {
+    display: flex;
+    gap: var(--wp--preset--spacing--20);
+    flex-wrap: wrap;
+}
+
+.publication-project-link {
+    font-size: var(--wp--preset--font-size--small);
+    color: var(--wp--preset--color--accent-3);
+    text-decoration: none;
+}
+
+.publication-project-link:hover {
+    text-decoration: underline;
+}
+
+.publication-divider {
+    border: none;
+    border-top: 1px solid var(--wp--preset--color--accent-6);
+    margin: 0;
+    padding: 0;
+    opacity: 0.4;
 }

@@ -4,7 +4,7 @@ function ihbi_theme_styles() {
         'ihbi-theme-style',
         get_stylesheet_uri(),
         [],
-        wp_get_theme()->get( 'Version' )
+        wp_get_theme()->get( 'Version' ) . '.' . time()
     );
 }
 add_action( 'wp_enqueue_scripts', 'ihbi_theme_styles' );
@@ -101,7 +101,7 @@ add_action( 'init', 'ihbi_register_project_cpt' );
 
 // Register Direction taxonomy
 function ihbi_register_direction_taxonomy() {
-    register_taxonomy( 'direction', 'project', [
+    register_taxonomy( 'direction', ['project', 'publication'], [
         'label'        => 'Directions',
         'public'       => true,
         'hierarchical' => true,
@@ -208,9 +208,9 @@ function render_funding_list() {
         ?>
         <div class="funding-item">
             <div class="funding-info">
-                <span class="funding-name"><?php echo esc_html( $sponsor->post_title ); ?></span>
+                <div class="funding-name"><?php echo esc_html( $sponsor->post_title ); ?></div>
                 <?php if ( $description ) : ?>
-                    <span class="funding-description"><?php echo esc_html( $description ); ?></span>
+                    <div class="funding-description"><?php echo esc_html( $description ); ?></div>
                 <?php endif; ?>
             </div>
             <?php if ( $projects ) : ?>
@@ -317,3 +317,185 @@ function ihbi_register_block_styles() {
     ]);
 }
 add_action( 'init', 'ihbi_register_block_styles' );
+
+// Register Publication CPT
+function ihbi_register_publication_cpt() {
+    register_post_type( 'publication', [
+        'label'         => 'Publications',
+        'public'        => true,
+        'show_in_rest'  => true,
+        'menu_icon'     => 'dashicons-book-alt',
+        'supports'      => [ 'title' ],
+        'rewrite'       => [ 'slug' => 'publications' ],
+        'has_archive'   => true,
+    ] );
+}
+add_action( 'init', 'ihbi_register_publication_cpt' );
+
+// Register Publication Type taxonomy
+function ihbi_register_publication_type_taxonomy() {
+    register_taxonomy( 'publication_type', 'publication', [
+        'label'        => 'Publication Type',
+        'public'       => true,
+        'hierarchical' => false,
+        'rewrite'      => [ 'slug' => 'publication-type' ],
+        'show_in_rest' => true,
+    ] );
+}
+add_action( 'init', 'ihbi_register_publication_type_taxonomy' );
+
+// Register ACF fields for Publication CPT
+function ihbi_register_publication_fields() {
+    if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
+
+    acf_add_local_field_group([
+        'key'      => 'group_publication_fields',
+        'title'    => 'Publication Details',
+        'location' => [
+            [
+                [
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'publication',
+                ],
+            ],
+        ],
+        'fields' => [
+            [
+                'key'          => 'field_publication_authors',
+                'label'        => 'Authors',
+                'name'         => 'publication_authors',
+                'type'         => 'textarea',
+                'instructions' => 'List all authors, e.g. "Smith J, Jones A, Eriksson B".',
+                'required'     => 1,
+                'rows'         => 2,
+                'new_lines'    => '',
+            ],
+            [
+                'key'          => 'field_publication_year',
+                'label'        => 'Year',
+                'name'         => 'publication_year',
+                'type'         => 'number',
+                'instructions' => 'Year of publication.',
+                'required'     => 1,
+                'min'          => 1900,
+                'max'          => 2100,
+                'step'         => 1,
+            ],
+            [
+                'key'          => 'field_publication_doi',
+                'label'        => 'DOI',
+                'name'         => 'publication_doi',
+                'type'         => 'text',
+                'instructions' => 'Full link, e.g. "https://doi.org/10.1016/j.enbuild.2026.117260" or just the DOI suffix "10.1016/j.enbuild.2026.117260".',
+                'required'     => 0,
+                'placeholder'  => '10.1016/j.enbuild.2026.117260 or https://doi.org/10.1016/j.enbuild.2026.117260',
+            ],
+            [
+                'key'               => 'field_publication_related_projects',
+                'label'             => 'Related Projects',
+                'name'              => 'publication_related_projects',
+                'type'              => 'relationship',
+                'instructions'      => 'Link this publication to one or more projects.',
+                'required'          => 0,
+                'post_type'         => [ 'project' ],
+                'filters'           => [ 'search' ],
+                'return_format'     => 'object',
+                'min'               => 0,
+                'max'               => 0,
+            ],
+        ],
+    ]);
+}
+add_action( 'acf/init', 'ihbi_register_publication_fields' );
+
+// Publications list shortcode
+add_shortcode( 'publication_list', 'render_publication_list' );
+
+function render_publication_list() {
+    $args = [
+        'post_type'      => 'publication',
+        'posts_per_page' => -1,
+        'orderby'        => 'meta_value_num',
+        'meta_key'       => 'publication_year',
+        'order'          => 'DESC',
+    ];
+
+    $publications = get_posts( $args );
+
+    if ( empty( $publications ) ) return '<p>No publications found.</p>';
+
+    ob_start();
+    ?>
+    <div class="publication-list">
+        <?php
+        // Group publications by year
+        $grouped = [];
+        foreach ( $publications as $pub ) {
+            $year = get_field( 'publication_year', $pub->ID ) ?: 'Unknown';
+            $grouped[ $year ][] = $pub;
+        }
+        krsort( $grouped );
+
+        foreach ( $grouped as $year => $pubs ) : ?>
+            <div class="publication-year-group">
+                <h2 class="publication-year-heading"><?php echo esc_html( $year ); ?></h2>
+                <?php foreach ( $pubs as $pub ) :
+                    $authors  = get_field( 'publication_authors', $pub->ID );
+                    $doi_input = get_field( 'publication_doi', $pub->ID );
+                    // Handle both full URLs and DOI-only inputs
+                    if ( $doi_input ) {
+                        $doi_url = ( strpos( $doi_input, 'http' ) === 0 ) ? $doi_input : 'https://doi.org/' . $doi_input;
+                        $doi_display = ( strpos( $doi_input, 'http' ) === 0 ) ? $doi_input : $doi_input;
+                    } else {
+                        $doi_url = '';
+                        $doi_display = '';
+                    }
+                    $pub_types = get_the_terms( $pub->ID, 'publication_type' );
+                    $directions = get_the_terms( $pub->ID, 'direction' );
+                    $projects = get_field( 'publication_related_projects', $pub->ID );
+                ?>
+                <div class="publication-item"><div class="publication-meta-top">
+                        <?php if ( $pub_types && ! is_wp_error( $pub_types ) ) : ?>
+                            <div class="publication-type-tag">
+                                <?php echo esc_html( $pub_types[0]->name ); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <p class="publication-title">
+                        <?php if ( $doi_url ) : ?>
+                            <a href="<?php echo esc_url( $doi_url ); ?>" target="_blank"><?php echo esc_html( $pub->post_title ); ?></a>
+                        <?php else : ?>
+                            <?php echo esc_html( $pub->post_title ); ?>
+                        <?php endif; ?>
+                    </p>
+                    <?php if ( $authors ) : ?>
+                        <p class="publication-authors"><?php echo esc_html( $authors ); ?></p>
+                    <?php else : ?>
+                        <p class="publication-authors" style="color: red;">No authors set</p>
+                    <?php endif; ?>
+                    <div class="publication-footer">
+                        <?php if ( $doi_url ) : ?>
+                            <a href="<?php echo esc_url( $doi_url ); ?>" class="publication-doi" target="_blank">DOI: <?php echo esc_html( $doi_display ); ?></a>
+                        <?php endif; ?>
+                        <?php if ( $projects ) : ?>
+                            <div class="publication-projects">
+                                <?php foreach ( $projects as $project ) : ?>
+                                    <p>Related project: </p><a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="publication-project-link"><?php echo esc_html( $project->post_title ); ?> &rarr;</a>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <?php if ( $directions && ! is_wp_error( $directions ) ) : ?>
+                        <?php foreach ( $directions as $direction ) : ?>
+                            <div class="publication-direction-tag"><?php echo esc_html( $direction->name ); ?></div>
+                        <?php endforeach; ?>
+                    <?php endif; ?></div>
+                <hr class="publication-divider" />
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php
+    return shortcode_unautop( trim( ob_get_clean() ) );
+}
