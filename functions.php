@@ -31,6 +31,7 @@ function render_project_details_shortcode() {
     // Fetch the ACF fields
     $year = get_field('project_year');
     $owner = get_field('project_owner');
+    $co_investigators = get_field('project_co_investigators');
     $sponsor = get_field('project_sponsor');
     $link = get_field('publication_link');
 
@@ -46,9 +47,15 @@ function render_project_details_shortcode() {
             <div class="meta-value"><?php echo esc_html($year); ?></div>
         </div>
         <div class="meta-item">
-            <div class="meta-label">Project Leader</div>
+            <div class="meta-label">Project Lead</div>
             <div class="meta-value"><?php echo esc_html($owner); ?></div>
         </div>
+        <?php if ( $co_investigators ) : ?>
+            <div class="meta-item">
+                <div class="meta-label">Co-Investigators</div>
+                <div class="meta-value"><?php echo wp_kses_post( $co_investigators ); ?></div>
+            </div>
+        <?php endif; ?>
         <?php if ( $sponsor ) : 
             $data = get_sponsor_data($sponsor);
             ?>
@@ -141,11 +148,21 @@ function ihbi_register_project_fields() {
             ],
             [
                 'key'          => 'field_project_owner',
-                'label'        => 'Owner',
+                'label'        => 'Project Lead',
                 'name'         => 'project_owner',
                 'type'         => 'text',
-                'instructions' => 'The person or team responsible for this project.',
+                'instructions' => 'The person or team responsible for this project (PI).',
                 'required'     => 0,
+            ],
+            [
+                'key'          => 'field_project_co_investigators',
+                'label'        => 'Co-Investigators',
+                'name'         => 'project_co_investigators',
+                'type'         => 'textarea',
+                'instructions' => 'List co-investigators or additional team members (one per line).',
+                'required'     => 0,
+                'rows'         => 3,
+                'new_lines'    => 'wpautop',
             ],
             [
                 'key'               => 'field_project_sponsor',
