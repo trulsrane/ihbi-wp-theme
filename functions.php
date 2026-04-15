@@ -46,7 +46,7 @@ function render_project_details_shortcode() {
             <div class="meta-value"><?php echo esc_html($year); ?></div>
         </div>
         <div class="meta-item">
-            <div class="meta-label">Owner</div>
+            <div class="meta-label">Principle Investigator/Project Leader</div>
             <div class="meta-value"><?php echo esc_html($owner); ?></div>
         </div>
         <?php if ( $sponsor ) : 
