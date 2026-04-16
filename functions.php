@@ -9,10 +9,13 @@ function ihbi_theme_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'ihbi_theme_styles' );
 
-// Helper function to get sponsor data
-function get_sponsor_data($sponsor) {
-    if (is_array($sponsor) && isset($sponsor[0])) {
-        $id = $sponsor[0];
+remove_filter( 'the_content', 'wpautop' );
+add_filter( 'the_content', 'wpautop' , 99);
+
+// Helper function to get funding data
+function get_funding_data($funding) {
+    if (is_array($funding) && isset($funding[0])) {
+        $id = $funding[0];
         $post = get_post($id);
         return $post ? ['title' => $post->post_title, 'id' => $post->ID] : ['title' => '', 'id' => ''];
     }
@@ -23,22 +26,18 @@ function get_sponsor_data($sponsor) {
 add_shortcode('project_details_bar', 'render_project_details_shortcode');
 
 function render_project_details_shortcode() {
-    // Only run this on single project posts
     if ( get_post_type() !== 'project' || !function_exists('get_field') ) {
         return '';
     }
 
-    // Fetch the ACF fields
-    $year = get_field('project_year');
-    $owner = get_field('project_owner');
+    $year             = get_field('project_year');
+    $owner            = get_field('project_owner');
     $co_investigators = get_field('project_co_investigators');
-    $sponsor = get_field('project_sponsor');
-    $link = get_field('publication_link');
+    $funding          = get_field('project_funding');
+    $publications     = get_field('project_publications');
+    $link             = get_field('publication_link');
+    $directions       = get_the_terms( get_the_ID(), 'direction' );
 
-    // Fetch the Direction tags
-    $directions = get_the_terms( get_the_ID(), 'direction' );
-
-    // Start building the HTML output
     ob_start();
     ?>
     <div class="project-metadata-bar">
@@ -50,27 +49,42 @@ function render_project_details_shortcode() {
             <div class="meta-label">Project Lead</div>
             <div class="meta-value"><?php echo esc_html($owner); ?></div>
         </div>
+
         <?php if ( $co_investigators ) : ?>
             <div class="meta-item">
                 <div class="meta-label">Co-Investigators</div>
-                <div class="meta-value"><?php echo wp_kses_post( $co_investigators ); ?></div>
-            </div>
+                <div class="meta-value"><?php echo wp_kses_post( $co_investigators ); ?></div></div>
         <?php endif; ?>
-        <?php if ( $sponsor ) : 
-            $data = get_sponsor_data($sponsor);
-            ?>
+
+        <?php if ( $funding ) : ?>
             <div class="meta-item">
-                <div class="meta-label">Sponsor</div>
-                <div class="meta-value">
-                    <?php if ($data['id']) : ?>
-                        <a href="<?php echo esc_url( get_permalink( $data['id'] ) ); ?>"><?php echo esc_html( $data['title'] ); ?></a>
-                    <?php else : ?>
-                        <?php echo esc_html( $data['title'] ); ?>
-                    <?php endif; ?>
+                <div class="meta-label">Funding</div>
+                <div class="meta-inline-list meta-tag--funding">
+                    <?php foreach ( $funding as $funder ) : ?>
+                        <a class="meta-value" href="<?php echo esc_url( get_permalink( $funder->ID ) ); ?>"><?php echo esc_html( $funder->post_title ); ?></a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if ( $link ) : ?>
+
+        <?php if ( $publications ) : ?>
+            <div class="meta-item">
+                <div class="meta-label">Publications</div>
+                <div class="meta-inline-list">
+                    <?php foreach ( $publications as $i => $pub ) :
+                        $doi_input = get_field( 'publication_doi', $pub->ID );
+                        $url = '';
+                        if ( $doi_input ) {
+                            $url = ( strpos( $doi_input, 'http' ) === 0 ) ? $doi_input : 'https://doi.org/' . $doi_input;
+                        } else {
+                            $url = get_permalink( $pub->ID );
+                        }
+                    ?>
+                        <a class="meta-tag--publication"href="<?php echo esc_url( $url ); ?>"title="<?php echo esc_attr( $pub->post_title ); ?>"target="_blank">[<?php echo $i + 1; ?>]</a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php elseif ( $link ) : ?>
             <div class="meta-item">
                 <div class="meta-label">Publication</div>
                 <div class="meta-value">
@@ -78,18 +92,18 @@ function render_project_details_shortcode() {
                 </div>
             </div>
         <?php endif; ?>
+
         <?php if ( !empty($directions) && !is_wp_error($directions) ) : ?>
-			<div class="meta-item">
-				<div class="meta-label">Direction</div>
+            <div class="meta-item">
+                <div class="meta-label">Direction</div>
                 <div class="meta-directions">
                     <?php foreach ( $directions as $direction ) : ?><a class="meta-tag" href="<?php echo esc_url( get_term_link( $direction ) ); ?>"><?php echo esc_html( $direction->name ); ?></a><?php endforeach; ?>
                 </div>
-			</div>
-		<?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php
-    // Return the HTML buffer
-    return ob_get_clean();
+    return shortcode_unautop( trim( ob_get_clean() ) );
 }
 
 // Register Project CPT
@@ -125,6 +139,7 @@ function ihbi_register_project_fields() {
     acf_add_local_field_group([
         'key'      => 'group_project_fields',
         'title'    => 'Project Details',
+        'new_lines' => '',
         'location' => [
             [
                 [
@@ -162,20 +177,20 @@ function ihbi_register_project_fields() {
                 'instructions' => 'List co-investigators or additional team members (one per line).',
                 'required'     => 0,
                 'rows'         => 3,
-                'new_lines'    => 'wpautop',
+                'new_lines' => '',
             ],
             [
-                'key'               => 'field_project_sponsor',
-                'label'             => 'Sponsor',
-                'name'              => 'project_sponsor',
+                'key'               => 'field_project_funding',
+                'label'             => 'Funding',
+                'name'              => 'project_funding',
                 'type'              => 'relationship',
-                'instructions'      => 'Link to a sponsor post if this project was externally funded.',
+                'instructions'      => 'Link to a funding post if this project was externally funded.',
                 'required'          => 0,
-                'post_type'         => [ 'sponsor' ],
+                'post_type'         => [ 'funding' ],
                 'filters'           => [ 'search' ],
                 'return_format'     => 'object',
                 'min'               => 0,
-                'max'               => 1,
+                'max'               => 5,
             ],
             [
                 'key'          => 'field_publication_link',
@@ -185,101 +200,108 @@ function ihbi_register_project_fields() {
                 'instructions' => 'A link to a published paper or external resource.',
                 'required'     => 0,
             ],
+            [
+                'key'               => 'field_project_publications',
+                'label'             => 'Publications',
+                'name'              => 'project_publications',
+                'type'              => 'relationship',
+                'instructions'      => 'Link one or more publications to this project.',
+                'required'          => 0,
+                'post_type'         => [ 'publication' ],
+                'filters'           => [ 'search' ],
+                'return_format'     => 'object',
+                'min'               => 0,
+                'max'               => 0,
+            ],
         ],
     ]);
 }
 add_action( 'acf/init', 'ihbi_register_project_fields' );
 
-// Register Sponsor CPT
-function ihbi_register_sponsor_cpt() {
-    register_post_type( 'sponsor', [
-        'label'         => 'Sponsors',
+// Register Funding CPT
+function ihbi_register_funding_cpt() {
+    register_post_type( 'funding', [
+        'label'         => 'Funding',
         'public'        => true,
         'show_in_rest'  => true,
         'menu_icon'     => 'dashicons-awards',
         'supports'      => [ 'title' ],
-        'rewrite'       => [ 'slug' => 'sponsors' ],
+        'rewrite'       => [ 'slug' => 'funding' ],
         'has_archive'  => true,
     ] );
 }
-add_action( 'init', 'ihbi_register_sponsor_cpt' );
+add_action( 'init', 'ihbi_register_funding_cpt' );
 
 add_shortcode( 'funding_list', 'render_funding_list' );
 
 function render_funding_list() {
-    $sponsors = get_posts([
-        'post_type'      => 'sponsor',
+    $fundings = get_posts([
+        'post_type'      => 'funding',
         'posts_per_page' => -1,
         'orderby'        => 'title',
         'order'          => 'ASC',
     ]);
 
-    if ( empty( $sponsors ) ) return '';
+    if ( empty( $fundings ) ) return '';
 
     ob_start();
     ?>
     <div class="funding-list">
-        <?php foreach ( $sponsors as $sponsor ) :
-            $description = get_field( 'sponsor_description', $sponsor->ID );
-            $projects    = get_field( 'related_projects', $sponsor->ID );
+        <?php foreach ( $fundings as $funding ) :
+            $description = get_field( 'funding_description', $funding->ID );
+            $projects    = get_field( 'funding_related_projects', $funding->ID );
         ?>
         <div class="funding-item">
-            <div class="funding-info">
-                <div class="funding-name"><?php echo esc_html( $sponsor->post_title ); ?></div>
+            <details class="funding-toggle">
+                <summary><?php echo esc_html( $funding->post_title ); ?></summary>
                 <?php if ( $description ) : ?>
                     <div class="funding-description"><?php echo esc_html( $description ); ?></div>
                 <?php endif; ?>
-            </div>
-            <?php if ( $projects ) : ?>
-            <div class="funding-links">
-                <?php foreach ( $projects as $project ) : ?>
-                    <a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="funding-link">
-                        <?php echo esc_html( $project->post_title ); ?> &rarr;
-                    </a>
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
+                <?php if ( $projects ) : ?>
+                    <div class="funding-links"><?php foreach ( $projects as $project ) : ?><a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="funding-link"><?php echo esc_html( $project->post_title ); ?> &rarr;</a><?php endforeach; ?></div>
+                <?php endif; ?>
+            </details>
         </div>
         <hr class="funding-divider" />
         <?php endforeach; ?>
     </div>
     <?php
-    return ob_get_clean();
+    return shortcode_unautop( trim( ob_get_clean() ) );
 }
 
-// Register ACF fields for Sponsor CPT
-function ihbi_register_sponsor_fields() {
+// Register ACF fields for Funding CPT
+function ihbi_register_funding_fields() {
     if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
 
     acf_add_local_field_group([
-        'key'      => 'group_sponsor_fields',
-        'title'    => 'Sponsor Details',
+        'key'      => 'group_funding_fields',
+        'title'    => 'Funding Details',
         'location' => [
             [
                 [
                     'param'    => 'post_type',
                     'operator' => '==',
-                    'value'    => 'sponsor',
+                    'value'    => 'funding',
                 ],
             ],
         ],
         'fields' => [
             [
-                'key'          => 'field_sponsor_description',
+                'key'          => 'field_funding_description',
                 'label'        => 'Description',
-                'name'         => 'sponsor_description',
+                'name'         => 'funding_description',
                 'type'         => 'textarea',
-                'instructions' => 'A short line describing what this sponsor funded.',
+                'instructions' => 'A short line describing what this funding supported.',
                 'required'     => 0,
                 'rows'         => 3,
                 'new_lines'    => 'br',
             ],
             [
-                'key'               => 'field_sponsor_related_projects',
+                'key'               => 'field_funding_related_projects',
                 'label'             => 'Related Projects',
-                'name'              => 'related_projects',
+                'name'              => 'funding_related_projects',
                 'type'              => 'relationship',
-                'instructions'      => 'Select one or more projects this sponsor helped fund.',
+                'instructions'      => 'Select one or more projects this funding helped support.',
                 'required'          => 0,
                 'post_type'         => [ 'project' ],
                 'filters'           => [ 'search' ],
@@ -290,41 +312,46 @@ function ihbi_register_sponsor_fields() {
         ],
     ]);
 }
-add_action( 'acf/init', 'ihbi_register_sponsor_fields' );
+add_action( 'acf/init', 'ihbi_register_funding_fields' );
 
-add_shortcode( 'sponsor_details', 'render_sponsor_details' );
+add_shortcode( 'funding_details', 'render_funding_details' );
 
-function render_sponsor_details() {
+function render_funding_details() {
     global $post;
-    if ( ! $post || get_post_type( $post->ID ) !== 'sponsor' ) return '';
+    if ( ! $post || get_post_type( $post->ID ) !== 'funding' ) return '';
 
-    $description = get_field( 'sponsor_description' );
-    $projects    = get_field( 'related_projects' );
+    $description = get_field( 'funding_description' );
+    $projects    = get_field( 'funding_related_projects' );
 
     ob_start();
     ?>
-    <div class="sponsor-details">
-        <?php if ( $description ) : ?>
-            <p class="sponsor-description">
-                <?php echo wp_kses_post( $description ); ?>
-            </p>
-        <?php endif; ?>
+    <div class="funding-details">
+        <?php if ( $description || $projects ) : ?>
+            <details class="funding-toggle">
+                <summary><?php echo esc_html( $post->post_title ); ?></summary>
+                <?php if ( $description ) : ?>
+                    <p class="funding-description">
+                        <?php echo wp_kses_post( $description ); ?>
+                    </p>
+                <?php endif; ?>
 
-        <?php if ( $projects ) : ?>
-            <div class="sponsor-projects">
-                <h2 class="sponsor-projects-title">Funded Projects</h2>
-                <div class="sponsor-project-list">
-                    <?php foreach ( $projects as $project ) : ?>
-                        <a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="sponsor-project-link">
-                            <?php echo esc_html( $project->post_title ); ?> &rarr;
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
+                <?php if ( $projects ) : ?>
+                    <div class="funding-projects">
+                        <h2 class="funding-projects-title">Funded Projects</h2>
+                        <div class="funding-project-list">
+                            <?php foreach ( $projects as $project ) : ?>
+                                <a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="funding-project-link">
+                                    <?php echo esc_html( $project->post_title ); ?> &rarr;
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </details>
         <?php endif; ?>
     </div>
     <?php
-    return ob_get_clean();
+    return shortcode_unautop( trim( ob_get_clean() ) );
 }
 
 function ihbi_register_block_styles() {

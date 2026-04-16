@@ -15,7 +15,7 @@ Version: 1.0.0
     margin: 0;
     font-family: var(--wp--preset--font-family--open-sans);
     font-size: var(--wp--preset--font-size--medium);
-    margin: 0;
+    margin-bottom: 1em;
     padding: 0;
 }
 
@@ -62,6 +62,37 @@ Version: 1.0.0
     text-decoration: underline;
 }
 
+.meta-inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.meta-tag--publication {
+    font-weight: 400;
+    min-width: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+.meta-tag--publication:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+}
+
+.meta-tag--funding {
+    gap: var(--wp--preset--spacing--20);
+}
+
+.meta-item p:empty {
+    display: none;
+}
+
+/* Or if WordPress inserted a non-breaking space &nbsp; */
+.meta-item p:only-child {
+    margin-bottom: 0;
+}
+
 .funding-list {
     display: flex;
     flex-direction: column;
@@ -70,9 +101,8 @@ Version: 1.0.0
 
 .funding-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--wp--preset--spacing--50);
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--20);
 }
 
 .funding-info {
@@ -88,16 +118,65 @@ Version: 1.0.0
     color: var(--wp--preset--color--contrast);
 }
 
-.funding-description {
-    font-size: var(--wp--preset--font-size--medium);
-    color: var(--wp--preset--color--accent-4);
+.funding-toggle {
+    padding: var(--wp--preset--spacing--20);
 }
 
-.funding-links {
+.funding-toggle summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--wp--preset--font-size--x-large);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+.funding-toggle summary::-webkit-details-marker {
+    display: none;
+}
+
+.funding-toggle summary::after {
+    content: "🡣";
+    font-size: 1em;
+    margin-left: 0.75rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.funding-toggle[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.funding-description,
+.funding-links,
+.funding-projects {
+    margin-top: var(--wp--preset--spacing--20);
+}
+
+.funding-links,
+.funding-project-list {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     gap: var(--wp--preset--spacing--20);
+    align-items: flex-start;
+}
+
+.funding-link,
+.funding-project-link {
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--small);
+    color: var(--wp--preset--color--accent-3);
+    text-decoration: none;
+}
+
+.funding-link br {
+    display: none;
+}
+
+.funding-link:hover,
+.funding-project-link:hover {
+    text-decoration: underline;
 }
 
 .funding-link {
