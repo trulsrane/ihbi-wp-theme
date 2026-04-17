@@ -122,29 +122,40 @@ Version: 1.0.0
     padding: var(--wp--preset--spacing--20);
 }
 
-.funding-toggle summary {
+.funding-toggle summary, .publications-toggle summary {
     list-style: none;
     cursor: pointer;
     font-weight: 600;
-    font-size: var(--wp--preset--font-size--x-large);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0;
 }
 
+.publications-toggle summary {
+    font-size: var(--wp--preset--font-size--small);
+}
+
+.publications-toggle {
+    margin: var(--wp--preset--spacing--20) 0 var(--wp--preset--spacing--20) 0;
+}
+
+.funding-toggle summary {
+    font-size: var(--wp--preset--font-size--x-large);
+}
+
 .funding-toggle summary::-webkit-details-marker {
     display: none;
 }
 
-.funding-toggle summary::after {
+.funding-toggle summary::after, .publications-toggle summary::after {
     content: "🡣";
     font-size: 1em;
     margin-left: 0.75rem;
     transition: transform 0.2s ease-in-out;
 }
 
-.funding-toggle[open] summary::after {
+.funding-toggle[open] summary::after, .publications-toggle[open] summary::after {
     transform: rotate(180deg);
 }
 
@@ -170,7 +181,7 @@ Version: 1.0.0
     text-decoration: none;
 }
 
-.funding-link br {
+.funding-link br, .publication-project-link br {
     display: none;
 }
 
@@ -258,6 +269,7 @@ Version: 1.0.0
     gap: var(--wp--preset--spacing--40);
     flex-wrap: wrap;
     font-size: var(--wp--preset--font-size--small);
+    margin: var(--wp--preset--spacing--20) 0 var(--wp--preset--spacing--20) 0;
 }
 
 .publication-doi {
@@ -273,8 +285,14 @@ Version: 1.0.0
 
 .publication-projects {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--wp--preset--spacing--20);
-    flex-wrap: wrap;
+    margin-top: var(--wp--preset--spacing--20);
+}
+
+.publication-projects br {
+    display: none;
 }
 
 .publication-project-link {
@@ -293,4 +311,8 @@ Version: 1.0.0
     margin: 0;
     padding: 0;
     opacity: 0.4;
+}
+
+.publication-item p:empty {
+  display: none;
 }

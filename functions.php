@@ -447,6 +447,7 @@ function ihbi_register_publication_fields() {
                 'return_format'     => 'object',
                 'min'               => 0,
                 'max'               => 0,
+                'new_lines'    => ''
             ],
         ],
     ]);
@@ -506,6 +507,11 @@ function render_publication_list() {
                             </div>
                         <?php endif; ?>
                     </div>
+                    <?php if ( $directions && ! is_wp_error( $directions ) ) : ?>
+                        <?php foreach ( $directions as $direction ) : ?>
+                            <div class="publication-direction-tag"><?php echo esc_html( $direction->name ); ?></div>
+                        <?php endforeach; ?>
+                    <?php endif; ?></div>
                     <p class="publication-title">
                         <?php if ( $doi_url ) : ?>
                             <a href="<?php echo esc_url( $doi_url ); ?>" target="_blank"><?php echo esc_html( $pub->post_title ); ?></a>
@@ -519,22 +525,19 @@ function render_publication_list() {
                         <p class="publication-authors" style="color: red;">No authors set</p>
                     <?php endif; ?>
                     <div class="publication-footer">
-                        <?php if ( $doi_url ) : ?>
-                            <a href="<?php echo esc_url( $doi_url ); ?>" class="publication-doi" target="_blank">DOI: <?php echo esc_html( $doi_display ); ?></a>
-                        <?php endif; ?>
                         <?php if ( $projects ) : ?>
-                            <div class="publication-projects">
-                                <?php foreach ( $projects as $project ) : ?>
-                                    <p>Related project: </p><a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="publication-project-link"><?php echo esc_html( $project->post_title ); ?> &rarr;</a>
-                                <?php endforeach; ?>
-                            </div>
+                            <details class="publications-toggle">
+                                <summary>Related Projects</summary>
+                                <div class="publication-projects">
+                                    <?php foreach ( $projects as $project ) : ?>
+                                        <a href="<?php echo esc_url( get_permalink( $project->ID ) ); ?>" class="publication-project-link">
+                                            <?php echo esc_html( $project->post_title ); ?> &rarr;
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </details>
                         <?php endif; ?>
                     </div>
-                    <?php if ( $directions && ! is_wp_error( $directions ) ) : ?>
-                        <?php foreach ( $directions as $direction ) : ?>
-                            <div class="publication-direction-tag"><?php echo esc_html( $direction->name ); ?></div>
-                        <?php endforeach; ?>
-                    <?php endif; ?></div>
                 <hr class="publication-divider" />
                 <?php endforeach; ?>
             </div>
