@@ -354,6 +354,36 @@ function render_funding_details() {
     return shortcode_unautop( trim( ob_get_clean() ) );
 }
 
+// Restrict direction taxonomy archives to projects only
+function ihbi_filter_direction_archive( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && is_tax( 'direction' ) ) {
+        $query->set( 'post_type', 'project' );
+    }
+}
+add_action( 'pre_get_posts', 'ihbi_filter_direction_archive' );
+
+// Rename the default Posts post type to News
+function ihbi_rename_posts_to_news() {
+    global $wp_post_types;
+    if ( ! isset( $wp_post_types['post'] ) ) return;
+
+    $labels                       = $wp_post_types['post']->labels;
+    $labels->name                 = 'News';
+    $labels->singular_name        = 'News';
+    $labels->add_new_item         = 'Add New News';
+    $labels->edit_item            = 'Edit News';
+    $labels->new_item             = 'New News';
+    $labels->view_item            = 'View News';
+    $labels->view_items           = 'View News';
+    $labels->search_items         = 'Search News';
+    $labels->not_found            = 'No news found';
+    $labels->not_found_in_trash   = 'No news found in Trash';
+    $labels->all_items            = 'All News';
+    $labels->menu_name            = 'News';
+    $labels->name_admin_bar       = 'News';
+}
+add_action( 'init', 'ihbi_rename_posts_to_news' );
+
 function ihbi_register_block_styles() {
     register_block_style( 'core/group', [
         'name'  => 'card',

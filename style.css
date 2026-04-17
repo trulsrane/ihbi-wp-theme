@@ -215,6 +215,21 @@ Version: 1.0.0
     box-shadow: var(--wp--preset--shadow--shadow-1);
 }
 
+/* Equal-height archive cards: stretch cards to row height, pin footer to bottom */
+/*.wp-block-post-template li {
+    display: flex;
+}
+
+.wp-block-post-template li .is-style-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}*/
+
+.wp-block-post-template li .is-style-card > .wp-block-group:last-child {
+    margin-top: auto;
+}
+
 .publication-year-heading {
     font-family: var(--wp--preset--font-family--roboto);
     font-size: var(--wp--preset--font-size--x-large);

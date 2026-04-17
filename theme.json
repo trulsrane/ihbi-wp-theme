@@ -115,6 +115,11 @@
             "lineHeight": "1.6"
         },
         "blocks": {
+            "core/post-template": {
+                "spacing": {
+                    "blockGap": "2em"
+                }
+            },
             "core/accordion": {
                 "typography": {
                     "fontFamily": "var(--wp--preset--font-family--open-sans)"
