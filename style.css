@@ -162,21 +162,21 @@ Version: 1.0.0
 .funding-description,
 .funding-links,
 .funding-projects {
-    margin-top: var(--wp--preset--spacing--20);
+    margin-top: var(--wp--preset--spacing--30);
 }
 
 .funding-links,
 .funding-project-list {
     display: flex;
     flex-direction: column;
-    gap: var(--wp--preset--spacing--20);
+    gap: var(--wp--preset--spacing--30);
     align-items: flex-start;
 }
 
 .funding-link,
 .funding-project-link {
     font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--medium);
     color: var(--wp--preset--color--accent-3);
     text-decoration: none;
 }
@@ -279,8 +279,8 @@ Version: 1.0.0
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--wp--preset--spacing--20);
-    margin-top: var(--wp--preset--spacing--20);
+    gap: var(--wp--preset--spacing--30);
+    margin-top: var(--wp--preset--spacing--30);
 }
 
 .publication-projects br {
@@ -288,7 +288,7 @@ Version: 1.0.0
 }
 
 .publication-project-link {
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--medium);
     color: var(--wp--preset--color--accent-3);
     text-decoration: none;
 }
