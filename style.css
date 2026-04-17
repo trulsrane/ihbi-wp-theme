@@ -190,17 +190,6 @@ Version: 1.0.0
     text-decoration: underline;
 }
 
-.funding-link {
-    font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--small);
-    color: var(--wp--preset--color--accent-3);
-    text-decoration: none;
-}
-
-.funding-link:hover {
-    text-decoration: underline;
-}
-
 .funding-divider {
     border: none;
     border-top: 1px solid var(--wp--preset--color--accent-6);
@@ -215,19 +204,14 @@ Version: 1.0.0
     box-shadow: var(--wp--preset--shadow--shadow-1);
 }
 
-/* Equal-height archive cards: stretch cards to row height, pin footer to bottom */
-/*.wp-block-post-template li {
-    display: flex;
-}
-
-.wp-block-post-template li .is-style-card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}*/
-
+/* Pin the footer row (tags/date) to the bottom of each archive card. */
 .wp-block-post-template li .is-style-card > .wp-block-group:last-child {
     margin-top: auto;
+}
+
+.publication-item p {
+    margin: 10px 0 0 0;
+    padding: 0;
 }
 
 .publication-year-heading {
@@ -236,13 +220,6 @@ Version: 1.0.0
     font-weight: 300;
     color: var(--wp--preset--color--accent-4);
     margin-bottom: var(--wp--preset--spacing--30);
-}
-
-.publication-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--wp--preset--spacing--20);
-    padding: var(--wp--preset--spacing--30) 0;
 }
 
 .publication-type-tag {
@@ -330,4 +307,12 @@ Version: 1.0.0
 
 .publication-item p:empty {
   display: none;
+}
+
+.publication-meta-top {
+    margin-bottom: var(--wp--preset--spacing--30);
+}
+
+.publication-direction-tag {
+    margin: 0;
 }
