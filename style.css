@@ -4,6 +4,86 @@ Template: twentytwentyfive
 Version: 1.0.0
 */
 
+.is-style-card {
+    background-color: var(--wp--preset--color--accent-5);
+    border-radius: 8px;
+    padding: 24px !important;
+    box-shadow: var(--wp--preset--shadow--shadow-1);
+}
+
+/* Apply border-radius directly on the media element so it clips regardless
+   of what the parent wrapper does. */
+.wp-block-post-featured-image img,
+.wp-block-image img,
+.wp-block-video video {
+    border-radius: 8px;
+}
+
+/* Add overflow:hidden to image figures so the caption is clipped inside the
+   rounded corners too — without this only the top corners appear rounded
+   when a caption is present. */
+.wp-block-image {
+    overflow: hidden;
+}
+
+/* Media-text can render the image as a CSS background-image instead of an
+   <img> tag, so target the figure container rather than the element inside. */
+.wp-block-media-text__media {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Cover uses a pseudo-element/div background, needs overflow:hidden on the
+   block itself to clip to the rounded corners from theme.json. */
+.wp-block-cover {
+    overflow: hidden;
+}
+
+/* Embeds: clip the iframe/content to rounded corners via the inner wrapper. */
+.wp-block-embed__wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Pin the footer row (tags/date) to the bottom of each archive card. */
+.wp-block-post-template li .is-style-card > .wp-block-group:last-child {
+    margin-top: auto;
+}
+
+.placeholder-thumbnail {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    background-color: color-mix(in srgb, var(--wp--preset--color--accent-6) 8%, var(--wp--preset--color--accent-5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+/* Optional: add a subtle image icon in the center */
+.placeholder-thumbnail::after {
+    content: '';
+    width: 48px;
+    height: 48px;
+    background-color: var(--wp--preset--color--accent-6);
+    opacity: 0.2;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+}
+
+.wp-block-post-excerpt__excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.6;
+    max-height: calc(1.6em * 2);
+}
+
 .project-metadata-bar {
     display: flex;
     flex-direction: column;
@@ -195,18 +275,6 @@ Version: 1.0.0
     border-top: 1px solid var(--wp--preset--color--accent-6);
     margin: 0;
     opacity: 0.4;
-}
-
-.is-style-card {
-    background-color: var(--wp--preset--color--accent-5);
-    border-radius: 8px;
-    padding: 24px !important;
-    box-shadow: var(--wp--preset--shadow--shadow-1);
-}
-
-/* Pin the footer row (tags/date) to the bottom of each archive card. */
-.wp-block-post-template li .is-style-card > .wp-block-group:last-child {
-    margin-top: auto;
 }
 
 .publication-item p {

@@ -52,6 +52,17 @@ function ihbi_rename_posts_to_news() {
 }
 add_action( 'init', 'ihbi_rename_posts_to_news' );
 
+// Show placeholder image when no featured image is set
+add_filter( 'post_thumbnail_html', function( $html, $post_id ) {
+    if ( ! empty( $html ) ) return $html;
+
+    // Only apply on project and post archives, not single posts
+    if ( ! is_archive() && ! is_home() ) return $html;
+
+    // Return only the inner div — the block adds its own <figure> wrapper around this.
+    return '<div class="placeholder-thumbnail" aria-hidden="true"></div>';
+}, 10, 2 );
+
 
 /* =========================================================
  * Helpers
@@ -354,7 +365,6 @@ function ihbi_register_publication_fields() {
                 'return_format'     => 'object',
                 'min'               => 0,
                 'max'               => 0,
-                'new_lines'    => ''
             ],
         ],
     ]);

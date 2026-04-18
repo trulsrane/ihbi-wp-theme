@@ -175,7 +175,20 @@
                 }
             },
             "core/image": {
+                "border": { "radius": "8px" },
                 "shadow": "none"
+            },
+            "core/post-featured-image": {
+                "border": { "radius": "8px" }
+            },
+            "core/video": {
+                "border": { "radius": "8px" }
+            },
+            "core/cover": {
+                "border": { "radius": "8px" }
+            },
+            "core/embed": {
+                "border": { "radius": "8px" }
             },
             "core/list": {
                 "typography": {
