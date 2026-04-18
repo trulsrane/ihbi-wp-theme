@@ -19,10 +19,11 @@ Version: 1.0.0
     border-radius: 8px;
 }
 
-/* Add overflow:hidden to image figures so the caption is clipped inside the
-   rounded corners too — without this only the top corners appear rounded
-   when a caption is present. */
+/* Set border-radius + overflow:hidden together on image figures so captions
+   (which can be block-level or absolutely positioned over the image in
+   galleries) get clipped to the same rounded corners as the image. */
 .wp-block-image {
+    border-radius: 8px;
     overflow: hidden;
 }
 
