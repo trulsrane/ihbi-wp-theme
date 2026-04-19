@@ -7,8 +7,23 @@ Version: 1.0.0
 .is-style-card {
     background-color: var(--wp--preset--color--accent-5);
     border-radius: 8px;
-    padding: 24px !important;
+    padding: 3% !important;
     box-shadow: var(--wp--preset--shadow--shadow-1);
+}
+
+.single-project .is-style-card {
+    padding: 2vw 2vw 0 2vw !important;
+}
+
+@media (max-width: 1100px) {
+    .news-grid.wp-block-post-template {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+@media (max-width: 600px) {
+    .news-grid.wp-block-post-template {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 /* Apply border-radius directly on the media element so it clips regardless
@@ -95,14 +110,14 @@ Version: 1.0.0
 .meta-item {
     margin: 0;
     font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--medium);
+    font-size: var(--wp--preset--font-size--ihbi-body);
     margin-bottom: 1em;
     padding: 0;
 }
 
 .meta-label {
     display: block;
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -135,7 +150,7 @@ Version: 1.0.0
     padding: 4px 8px;
     margin-top: 10px;
     text-decoration: none;
-    font-size: small;
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     color: var(--wp--preset--color--accent-6);
 }
 
@@ -194,7 +209,7 @@ Version: 1.0.0
 
 .funding-name {
     font-family: var(--wp--preset--font-family--roboto);
-    font-size: var(--wp--preset--font-size--x-large);
+    font-size: var(--wp--preset--font-size--heading-2);
     font-weight: 500;
     color: var(--wp--preset--color--contrast);
 }
@@ -214,7 +229,7 @@ Version: 1.0.0
 }
 
 .publications-toggle summary {
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
 }
 
 .publications-toggle {
@@ -222,7 +237,7 @@ Version: 1.0.0
 }
 
 .funding-toggle summary {
-    font-size: var(--wp--preset--font-size--x-large);
+    font-size: var(--wp--preset--font-size--heading-2);
 }
 
 .funding-toggle summary::-webkit-details-marker {
@@ -257,7 +272,7 @@ Version: 1.0.0
 .funding-link,
 .funding-project-link {
     font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--medium);
+    font-size: var(--wp--preset--font-size--ihbi-body);
     color: var(--wp--preset--color--accent-3);
     text-decoration: none;
 }
@@ -285,7 +300,7 @@ Version: 1.0.0
 
 .publication-year-heading {
     font-family: var(--wp--preset--font-family--roboto);
-    font-size: var(--wp--preset--font-size--x-large);
+    font-size: var(--wp--preset--font-size--heading-2);
     font-weight: 300;
     color: var(--wp--preset--color--accent-4);
     margin-bottom: var(--wp--preset--spacing--30);
@@ -293,7 +308,7 @@ Version: 1.0.0
 
 .publication-type-tag {
     font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -302,7 +317,7 @@ Version: 1.0.0
 
 .publication-title {
     font-family: var(--wp--preset--font-family--roboto);
-    font-size: var(--wp--preset--font-size--medium);
+    font-size: var(--wp--preset--font-size--ihbi-body);
     font-weight: 500;
     margin: 0;
     color: var(--wp--preset--color--contrast);
@@ -318,7 +333,7 @@ Version: 1.0.0
 }
 
 .publication-authors {
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     color: var(--wp--preset--color--accent-4);
     margin: 0;
 }
@@ -329,13 +344,13 @@ Version: 1.0.0
     justify-content: space-between;
     gap: var(--wp--preset--spacing--40);
     flex-wrap: wrap;
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     margin: var(--wp--preset--spacing--20) 0 var(--wp--preset--spacing--20) 0;
 }
 
 .publication-doi {
     font-family: var(--wp--preset--font-family--open-sans);
-    font-size: var(--wp--preset--font-size--small);
+    font-size: var(--wp--preset--font-size--ihbi-caption);
     color: var(--wp--preset--color--accent-3);
     text-decoration: none;
 }
@@ -357,7 +372,7 @@ Version: 1.0.0
 }
 
 .publication-project-link {
-    font-size: var(--wp--preset--font-size--medium);
+    font-size: var(--wp--preset--font-size--ihbi-body);
     color: var(--wp--preset--color--accent-3);
     text-decoration: none;
 }
