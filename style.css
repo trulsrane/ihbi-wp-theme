@@ -7,8 +7,14 @@ Version: 1.0.0
 .is-style-card {
     background-color: var(--wp--preset--color--accent-5);
     border-radius: 8px;
-    padding: 2vw !important;
+    padding: 24px !important;
     box-shadow: var(--wp--preset--shadow--shadow-1);
+}
+
+.page-eyebrow {
+    color: var(--wp--preset--color--accent-3);
+    text-decoration: underline;
+    margin-bottom: 10vh;
 }
 
 @media (max-width: 1100px) {
@@ -205,7 +211,7 @@ Version: 1.0.0
 
 .funding-name {
     font-family: var(--wp--preset--font-family--roboto);
-    font-size: var(--wp--preset--font-size--heading-2);
+    font-size: var(--wp--preset--font-size--heading-3);
     font-weight: 500;
     color: var(--wp--preset--color--contrast);
 }
@@ -233,7 +239,7 @@ Version: 1.0.0
 }
 
 .funding-toggle summary {
-    font-size: var(--wp--preset--font-size--heading-2);
+    font-size: var(--wp--preset--font-size--heading-4);
 }
 
 .funding-toggle summary::-webkit-details-marker {

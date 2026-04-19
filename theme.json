@@ -289,7 +289,8 @@
             },
             "core/site-title": {
                 "typography": {
-                    "letterSpacing": "0px"
+                    "letterSpacing": "0px",
+                    "fontSize": "var(--wp--preset--font-size--heading-5)"
                 }
             }
         },

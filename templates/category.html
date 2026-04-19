@@ -1,9 +1,18 @@
 <!-- wp:template-part {"slug":"header"} /-->
 
-<!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--60)">
-	<!-- wp:query-title {"type":"archive"} /-->
+<!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"5vh"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group" style="padding-top:5vh">
+	<!-- wp:heading {"level":5,"align":"wide","className":"page-eyebrow"} -->
+	<h5 class="wp-block-heading alignwide page-eyebrow">Category</h5>
+	<!-- /wp:heading -->
+	<!-- wp:query-title {"type":"archive","textAlign":"center","level":1,"showPrefix":false,"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"}}}} /-->
 	<!-- wp:term-description /-->
+	<!-- wp:separator -->
+	<hr class="wp-block-separator has-alpha-channel-opacity"/>
+	<!-- /wp:separator -->
+	<!-- wp:spacer {"height":"var:preset|spacing|60"} -->
+	<div style="height:var(--wp--preset--spacing--60)" aria-hidden="true" class="wp-block-spacer"></div>
+	<!-- /wp:spacer -->
 	<!-- wp:pattern {"slug":"ihbi/news-query-loop"} /-->
 </main>
 <!-- /wp:group -->
