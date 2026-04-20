@@ -27,8 +27,8 @@
         <!-- /wp:group -->
     <!-- /wp:post-template -->
 
-	<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-	<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+	<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|20"}}},"layout":{"type":"constrained"}} -->
+	<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--20)">
 		<!-- wp:query-no-results -->
 		<!-- wp:paragraph -->
 		<p><?php esc_html_e( 'No news posts found.', 'ihbi-wp-theme' ); ?></p>
