@@ -16,7 +16,7 @@
 	<div class="wp-block-group">
 
 		<!-- wp:heading {"textAlign":"center","style":{"spacing":{"margin":{"right":"0","left":"0"},"padding":{"right":"0","left":"0"}}},"fontSize":"h1"} -->
-		<h2 class="wp-block-heading has-text-align-center has-h-1-font-size" style="margin-right:0;margin-left:0;padding-right:0;padding-left:0"><?php esc_html_e( 'We are always looking for new collaborations!', 'ihbi-wp-theme' ); ?></h2>
+		<h2 class="wp-block-heading has-text-align-center has-heading-2-font-size" style="margin-right:0;margin-left:0;padding-right:0;padding-left:0"><?php esc_html_e( 'We are always looking for new collaborations!', 'ihbi-wp-theme' ); ?></h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph {"align":"center"} -->
