@@ -247,10 +247,22 @@ Version: 1.0.0
 }
 
 .funding-toggle summary::after, .publications-toggle summary::after {
-    content: "🡣";
-    font-size: 1em;
+    content: '';
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
     margin-left: 0.75rem;
+    background-color: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
     transition: transform 0.2s ease-in-out;
+    vertical-align: middle;
 }
 
 .funding-toggle[open] summary::after, .publications-toggle[open] summary::after {
