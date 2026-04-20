@@ -28,6 +28,13 @@ Version: 1.0.0
     }
 }
 
+header.wp-block-template-part {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--wp--preset--color--base);
+}
+
 /* Apply border-radius directly on the media element so it clips regardless
    of what the parent wrapper does. */
 .wp-block-post-featured-image img,
