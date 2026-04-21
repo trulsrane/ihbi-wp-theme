@@ -525,6 +525,13 @@ header.wp-block-template-part {
     margin: 0;
 }
 
+.team-member-excerpt {
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--ihbi-body);
+    color: var(--wp--preset--color--accent-6);
+    margin: var(--wp--preset--spacing--20) 0 0 0;
+}
+
 .team-member-details {
     margin-top: var(--wp--preset--spacing--20);
 }

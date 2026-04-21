@@ -720,7 +720,10 @@ function render_team_list() {
                             <?php if ( $role ) : ?>
                                 <p class="team-member-role"><?php echo esc_html( $role ); ?></p>
                             <?php endif; ?>
-                            <?php if ( $background ) : ?>
+                            <?php if ( $background ) :
+                                $excerpt = wp_trim_words( wp_strip_all_tags( $background ), 28, '…' );
+                            ?>
+                                <p class="team-member-excerpt"><?php echo esc_html( $excerpt ); ?></p>
                                 <details class="team-member-details">
                                     <summary class="team-member-toggle"></summary>
                                     <div class="team-member-background"><?php echo wp_kses_post( $background ); ?></div>
