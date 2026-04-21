@@ -4,6 +4,10 @@ Template: twentytwentyfive
 Version: 1.0.0
 */
 
+html {
+    scroll-behavior: smooth;
+}
+
 .is-style-card {
     background-color: var(--wp--preset--color--accent-5);
     border-radius: 8px;
