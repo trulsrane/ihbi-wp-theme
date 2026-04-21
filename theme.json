@@ -215,7 +215,7 @@
                         "color": {
                             "text": "var(--wp--preset--color--accent-3)"
                         },
-                        "css": ".wp-block-button__link {transition:background-color 0.2s ease,color 0.2s ease;} .wp-block-button__link:hover {background-color:var(--wp--preset--color--accent-3);color:var(--wp--preset--color--base);}",
+                        "css": ".wp-block-button__link:not(.has-background) {transition:background-color 0.2s ease,color 0.2s ease;} .wp-block-button__link:not(.has-background):hover {background-color:var(--wp--preset--color--accent-3) !important;color:var(--wp--preset--color--base) !important;}",
                         "spacing": {
                             "padding": {
                                 "bottom": "calc(1rem - 1px)",
