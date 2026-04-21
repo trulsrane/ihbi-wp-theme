@@ -534,6 +534,17 @@ header.wp-block-template-part {
 
 .team-member-details {
     margin-top: var(--wp--preset--spacing--20);
+    display: flex;
+    flex-direction: column;
+}
+
+.team-member-details[open] .team-member-toggle {
+    order: 2;
+    margin-top: var(--wp--preset--spacing--20);
+}
+
+.team-member-card:has(.team-member-details[open]) .team-member-excerpt {
+    display: none;
 }
 
 .team-member-toggle {
@@ -562,7 +573,6 @@ header.wp-block-template-part {
 }
 
 .team-member-background {
-    margin-top: var(--wp--preset--spacing--20);
     font-family: var(--wp--preset--font-family--open-sans);
     font-size: var(--wp--preset--font-size--ihbi-body);
     color: var(--wp--preset--color--accent-6);
