@@ -453,3 +453,104 @@ header.wp-block-template-part {
 .publication-direction-tag {
     margin: 0;
 }
+
+.team-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--60);
+}
+
+.team-group-heading {
+    font-family: var(--wp--preset--font-family--roboto);
+    font-size: var(--wp--preset--font-size--heading-3);
+    font-weight: 500;
+    color: var(--wp--preset--color--contrast);
+    margin-bottom: var(--wp--preset--spacing--40);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--wp--preset--spacing--40);
+}
+
+@media (max-width: 900px) {
+    .team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.team-member-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--20);
+}
+
+.team-member-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.team-member-photo {
+    margin: 0;
+}
+
+.team-member-name {
+    font-family: var(--wp--preset--font-family--roboto);
+    font-size: var(--wp--preset--font-size--heading-5);
+    font-weight: 600;
+    color: var(--wp--preset--color--contrast);
+    margin: var(--wp--preset--spacing--20) 0 0 0;
+}
+
+.team-member-role {
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--ihbi-body);
+    color: var(--wp--preset--color--accent-4);
+    margin: 0;
+}
+
+.team-member-details {
+    margin-top: var(--wp--preset--spacing--20);
+}
+
+.team-member-toggle {
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--ihbi-body);
+    color: var(--wp--preset--color--accent-3);
+    font-weight: 500;
+}
+
+.team-member-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.team-member-toggle::before {
+    content: "Read more";
+}
+
+.team-member-details[open] .team-member-toggle::before {
+    content: "Show less";
+}
+
+.team-member-toggle:hover::before {
+    text-decoration: underline;
+}
+
+.team-member-background {
+    margin-top: var(--wp--preset--spacing--20);
+    font-family: var(--wp--preset--font-family--open-sans);
+    font-size: var(--wp--preset--font-size--ihbi-body);
+    color: var(--wp--preset--color--accent-6);
+}

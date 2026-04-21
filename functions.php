@@ -597,3 +597,141 @@ function render_funding_details() {
     <?php
     return shortcode_unautop( trim( ob_get_clean() ) );
 }
+
+
+/* =========================================================
+ * Team Members
+ * ========================================================= */
+
+function ihbi_register_team_member_cpt() {
+    register_post_type( 'team_member', [
+        'label'              => 'Team Members',
+        'public'             => true,
+        'publicly_queryable' => false,
+        'exclude_from_search' => true,
+        'show_in_rest'       => true,
+        'menu_icon'          => 'dashicons-groups',
+        'supports'           => [ 'title', 'thumbnail' ],
+        'has_archive'        => false,
+    ] );
+}
+add_action( 'init', 'ihbi_register_team_member_cpt' );
+
+function ihbi_register_team_group_taxonomy() {
+    register_taxonomy( 'team_group', 'team_member', [
+        'label'        => 'Team Groups',
+        'public'       => false,
+        'hierarchical' => false,
+        'show_in_rest' => true,
+        'show_ui'      => true,
+    ] );
+
+    // Seed the three fixed groups on first run.
+    foreach ( [ 'Researchers', 'PhD & MSc Students', 'Alumni & Visiting Scholars' ] as $term_name ) {
+        if ( ! term_exists( $term_name, 'team_group' ) ) {
+            wp_insert_term( $term_name, 'team_group' );
+        }
+    }
+}
+add_action( 'init', 'ihbi_register_team_group_taxonomy' );
+
+function ihbi_register_team_member_fields() {
+    if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
+
+    acf_add_local_field_group([
+        'key'      => 'group_team_member_fields',
+        'title'    => 'Team Member Details',
+        'location' => [
+            [
+                [
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'team_member',
+                ],
+            ],
+        ],
+        'fields' => [
+            [
+                'key'          => 'field_member_role',
+                'label'        => 'Role',
+                'name'         => 'member_role',
+                'type'         => 'text',
+                'instructions' => 'Job title or role in the lab',
+                'required'     => 0,
+            ],
+            [
+                'key'          => 'field_member_background',
+                'label'        => 'Background',
+                'name'         => 'member_background',
+                'type'         => 'wysiwyg',
+                'instructions' => 'Professional background, research interests, previous positions',
+                'required'     => 0,
+            ],
+        ],
+    ]);
+}
+add_action( 'acf/init', 'ihbi_register_team_member_fields' );
+
+// [team_list] — renders all team members grouped by team_group taxonomy in a fixed order.
+add_shortcode( 'team_list', 'render_team_list' );
+
+function render_team_list() {
+    $group_order = [ 'Researchers', 'PhD & MSc Students', 'Alumni & Visiting Scholars' ];
+
+    ob_start();
+    ?>
+    <div class="team-list">
+        <?php foreach ( $group_order as $group_name ) :
+            $term = get_term_by( 'name', $group_name, 'team_group' );
+            if ( ! $term || is_wp_error( $term ) ) continue;
+
+            $members = get_posts([
+                'post_type'      => 'team_member',
+                'posts_per_page' => -1,
+                'orderby'        => 'title',
+                'order'          => 'ASC',
+                'tax_query'      => [
+                    [
+                        'taxonomy' => 'team_group',
+                        'field'    => 'term_id',
+                        'terms'    => $term->term_id,
+                    ],
+                ],
+            ]);
+
+            if ( empty( $members ) ) continue;
+        ?>
+            <div class="team-group">
+                <h2 class="team-group-heading"><?php echo esc_html( $group_name ); ?></h2>
+                <div class="team-grid">
+                    <?php foreach ( $members as $member ) :
+                        $role       = get_field( 'member_role', $member->ID );
+                        $background = get_field( 'member_background', $member->ID );
+                    ?>
+                        <div class="team-member-card is-style-card">
+                            <div class="team-member-photo">
+                                <?php if ( has_post_thumbnail( $member->ID ) ) : ?>
+                                    <?php echo get_the_post_thumbnail( $member->ID, 'medium_large', [ 'class' => 'team-member-image' ] ); ?>
+                                <?php else : ?>
+                                    <div class="placeholder-thumbnail team-member-image" aria-hidden="true"></div>
+                                <?php endif; ?>
+                            </div>
+                            <h3 class="team-member-name"><?php echo esc_html( $member->post_title ); ?></h3>
+                            <?php if ( $role ) : ?>
+                                <p class="team-member-role"><?php echo esc_html( $role ); ?></p>
+                            <?php endif; ?>
+                            <?php if ( $background ) : ?>
+                                <details class="team-member-details">
+                                    <summary class="team-member-toggle"></summary>
+                                    <div class="team-member-background"><?php echo wp_kses_post( $background ); ?></div>
+                                </details>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php
+    return shortcode_unautop( trim( ob_get_clean() ) );
+}
