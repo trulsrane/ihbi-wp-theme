@@ -215,7 +215,7 @@
                         "color": {
                             "text": "var(--wp--preset--color--accent-3)"
                         },
-                        "css": ".wp-block-button__link:not(.has-background):hover {background-color:color-mix(in srgb, var(--wp--preset--color--contrast) 5%, transparent);}",
+                        "css": ".wp-block-button__link {transition:background-color 0.2s ease,color 0.2s ease;} .wp-block-button__link:hover {background-color:var(--wp--preset--color--accent-3);color:var(--wp--preset--color--base);}",
                         "spacing": {
                             "padding": {
                                 "bottom": "calc(1rem - 1px)",
@@ -302,7 +302,7 @@
                 },
                 ":hover": {
                     "color": {
-                        "background": "color-mix(in srgb, var(--wp--preset--color--contrast) 85%, transparent)",
+                        "background": "color-mix(in srgb, var(--wp--preset--color--accent-3) 80%, black)",
                         "text": "var(--wp--preset--color--base)"
                     }
                 },
