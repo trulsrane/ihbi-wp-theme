@@ -110,26 +110,19 @@ header.wp-block-template-part {
 }
 
 .uagb-forms-main-submit-button {
-    background-color: var(--wp--preset--color--accent-3) !important;
+    background-color: transparent !important;
     color: var(--wp--preset--color--base) !important;
-    border: none !important;
+    border: 1px solid var(--wp--preset--color--base) !important;
     border-radius: 8px !important;
     padding: 1rem 2.25rem !important;
     font-family: var(--wp--preset--font-family--roboto) !important;
     font-weight: 700 !important;
-    transition: background-color 0.2s ease;
-}
-
-.uagb-forms-main-submit-button {
-    background-color: var(--wp--preset--color--accent-3) !important;
-    color: var(--wp--preset--color--base) !important;
-    border: none !important;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .uagb-forms-main-submit-button:hover {
-    background-color: color-mix(in srgb, var(--wp--preset--color--accent-3) 85%, black) !important;
-    color: var(--wp--preset--color--base) !important;
+    background-color: var(--wp--preset--color--base) !important;
+    color: var(--wp--preset--color--accent-3) !important;
 }
 
 .project-metadata-bar {
