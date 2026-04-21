@@ -125,6 +125,18 @@ header.wp-block-template-part {
     color: var(--wp--preset--color--accent-3) !important;
 }
 
+.wp-block-button.is-style-outline > .wp-block-button__link {
+    background-color: transparent !important;
+    color: var(--wp--preset--color--accent-3) !important;
+    border: 1px solid var(--wp--preset--color--accent-3) !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:hover {
+    background-color: var(--wp--preset--color--accent-3) !important;
+    color: var(--wp--preset--color--base) !important;
+}
+
 .project-metadata-bar {
     display: flex;
     flex-direction: column;
