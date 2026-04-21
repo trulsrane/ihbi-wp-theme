@@ -462,7 +462,7 @@ header.wp-block-template-part {
 
 .team-group-heading {
     font-family: var(--wp--preset--font-family--roboto);
-    font-size: var(--wp--preset--font-size--heading-3);
+    font-size: var(--wp--preset--font-size--heading-2);
     font-weight: 500;
     color: var(--wp--preset--color--contrast);
     margin-bottom: var(--wp--preset--spacing--40);
