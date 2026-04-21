@@ -680,7 +680,7 @@ function render_team_list() {
 
     ob_start();
     ?>
-    <div class="team-list">
+    <div class="team-list alignwide">
         <?php foreach ( $group_order as $group_name ) :
             $term = get_term_by( 'name', $group_name, 'team_group' );
             if ( ! $term || is_wp_error( $term ) ) continue;

@@ -492,16 +492,22 @@ header.wp-block-template-part {
     gap: var(--wp--preset--spacing--20);
 }
 
-.team-member-image {
+.team-member-photo {
     width: 100%;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
     border-radius: 8px;
-    display: block;
+    overflow: hidden;
+    margin: 0;
 }
 
-.team-member-photo {
-    margin: 0;
+.team-member-photo img,
+.team-member-photo .placeholder-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
+    aspect-ratio: auto;
 }
 
 .team-member-name {
