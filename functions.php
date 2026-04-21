@@ -667,6 +667,22 @@ function ihbi_register_team_member_fields() {
                 'instructions' => 'Professional background, research interests, previous positions',
                 'required'     => 0,
             ],
+            [
+                'key'          => 'field_member_email',
+                'label'        => 'Email',
+                'name'         => 'member_email',
+                'type'         => 'email',
+                'instructions' => 'Work email address',
+                'required'     => 0,
+            ],
+            [
+                'key'          => 'field_member_phone',
+                'label'        => 'Phone',
+                'name'         => 'member_phone',
+                'type'         => 'text',
+                'instructions' => 'Work phone number, including country code (e.g. +46 90 786 50 00)',
+                'required'     => 0,
+            ],
         ],
     ]);
 }
@@ -707,6 +723,8 @@ function render_team_list() {
                     <?php foreach ( $members as $member ) :
                         $role       = get_field( 'member_role', $member->ID );
                         $background = get_field( 'member_background', $member->ID );
+                        $email      = get_field( 'member_email', $member->ID );
+                        $phone      = get_field( 'member_phone', $member->ID );
                     ?>
                         <div class="team-member-card is-style-card">
                             <div class="team-member-photo">
@@ -719,6 +737,20 @@ function render_team_list() {
                             <h3 class="team-member-name"><?php echo esc_html( $member->post_title ); ?></h3>
                             <?php if ( $role ) : ?>
                                 <p class="team-member-role"><?php echo esc_html( $role ); ?></p>
+                            <?php endif; ?>
+                            <?php if ( $email || $phone ) : ?>
+                                <ul class="team-member-contact">
+                                    <?php if ( $email ) : ?>
+                                        <li class="team-member-contact-item">
+                                            <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if ( $phone ) : ?>
+                                        <li class="team-member-contact-item">
+                                            <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
                             <?php endif; ?>
                             <?php if ( $background ) :
                                 $excerpt = wp_trim_words( wp_strip_all_tags( $background ), 28, '…' );
